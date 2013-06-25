@@ -46,7 +46,10 @@ To make a request, you must sepecify the following options:
 ##Basic Auth
 
 For basic auth support, use the ANUtils class to set a username and password in preferences, and it will be used for every request.
-	public void setLogin(String username, String password)
+
+    public void setLogin(String username, String password)
+    
+You can disable basic auth by calling enableBasicAuth(boolean shouldUseAuth).  Otherwise, ANK will use basic auth if you supply a usernamae and password by default
 
 ##Notes
 * The decode method exposes the parsing method in your main activity, so you can have the applicable code right in your activity, while hiding all the ugly networking code
