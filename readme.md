@@ -53,7 +53,6 @@ For basic auth support, use the ANUtils class to set a username and password in 
 * Return any Object from the decode method, and then recieve it in the resultOk by calling msg.obj;
 * If null is returned from decode, resultFailed will be called
 * For json data parsing, check out [google GSON](https://code.google.com/p/google-gson/) for easy parsing
-* 
 
 ##Copyright 2012 MindBlownInnovation
 
