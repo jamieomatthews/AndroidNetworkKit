@@ -67,8 +67,8 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 		username = util.getUsername();
 		password = util.getPassword();
 		userAgent = ANUtils.getVersionString(context);
-		doBasicAuth = false;
-		if(action.equals(ANUtils.ACTION_GET))//is get
+		doBasicAuth = (!username.equals("")) ? true:false;
+		if(action.equals(ANUtils.ACTION_GET))
 		{
 			queryString = ANUtils.decodeParams(params, queryString);
 		}
@@ -141,7 +141,7 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 		UIHandler.sendMessage(msg);
         super.onPostExecute(result);
 	}
-	public void doBasicAuth(Boolean shouldAuth){
+	public void enableBasicAuth(Boolean shouldAuth){
 		doBasicAuth = shouldAuth;
 	}
 	public String doPost()
