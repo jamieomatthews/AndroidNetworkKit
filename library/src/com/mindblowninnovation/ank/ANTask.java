@@ -50,6 +50,7 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 	private String type;
 	private static String userAgent;
 	private boolean hasInternet;
+	private boolean doBasicAuth;
 	//unimplemented methods
 	protected abstract Object decode(String jsondata) throws JSONException;
 	
@@ -66,6 +67,7 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 		username = util.getUsername();
 		password = util.getPassword();
 		userAgent = ANUtils.getVersionString(context);
+		doBasicAuth = false;
 		if(action.equals(ANUtils.ACTION_GET))//is get
 		{
 			queryString = ANUtils.decodeParams(params, queryString);
@@ -139,7 +141,9 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 		UIHandler.sendMessage(msg);
         super.onPostExecute(result);
 	}
-	
+	public void doBasicAuth(Boolean shouldAuth){
+		doBasicAuth = shouldAuth;
+	}
 	public String doPost()
 	{
 		Log.d("ASYCH", "Starting POST");
@@ -152,7 +156,10 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 			String full_url = baseURL + URL;
 			Log.d("URL", full_url);
 			HttpPost httppost = new HttpPost(full_url);
-			httppost.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
+			if(doBasicAuth){
+				httppost.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
+			}
+			
 	        httppost.setEntity(new UrlEncodedFormEntity(params));
 	        httppost.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
 	        response = client.execute(httppost);
@@ -207,9 +214,10 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 			String full_url = baseURL + URL + queryString;
 			Log.d("URL", full_url);
 			HttpGet httpget = new HttpGet(full_url);
-			//String encoded = Base64.encodeToString((device_id+":"+sec_token).getBytes(), Base64.URL_SAFE));
-			//httpget.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
-			//httpget.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
+			if(doBasicAuth){
+				httpget.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
+			}
+			httpget.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
 	        response = client.execute(httpget);
 	        HttpParams params = httpget.getParams();
 	        StatusLine statusLine = response.getStatusLine();
@@ -270,7 +278,10 @@ public abstract class ANTask extends AsyncTask<String, Void, Object>
 			String full_url = baseURL + URL;
 			Log.d("URL", full_url);
 			HttpPost httppost = new HttpPost(full_url);
-			httppost.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
+			if(doBasicAuth){
+				httppost.setHeader("Authorization", "Basic "+Base64.encodeToString(((username+":"+password).getBytes()), Base64.NO_WRAP));
+			}
+			
 			//passes the results to a string builder/entity
 			BasicNameValuePair p = (BasicNameValuePair)params.get(0);
 			String jsondata = p.getValue();
