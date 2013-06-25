@@ -52,8 +52,7 @@ For basic auth support, use the ANUtils class to set a username and password in 
 * The decode method exposes the parsing method in your main activity, so you can have the applicable code right in your activity, while hiding all the ugly networking code
 * Return any Object from the decode method, and then recieve it in the resultOk by calling msg.obj;
 * If null is returned from decode, resultFailed will be called
-* For json data parsing, check out google GSON for easy parsing
-* 
+* For json data parsing, check out [google GSON](https://code.google.com/p/google-gson/) for easy parsing
 
 ##Copyright 2012 MindBlownInnovation
 
